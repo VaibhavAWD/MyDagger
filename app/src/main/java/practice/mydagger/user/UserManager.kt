@@ -1,18 +1,27 @@
 package practice.mydagger.user
 
 import practice.mydagger.storage.Storage
+import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val REGISTERED_USER = "registered_user"
 private const val PASSWORD_SUFFIX = "password"
 
-class UserManager(private val storage: Storage) {
+@Singleton
+class UserManager @Inject constructor(
+    private val storage: Storage,
+    // Since UserManager will be in charge of managing the UserComponent lifecycle,
+    // it needs to know how to create instances of it
+    private val userComponentFactory: UserComponent.Factory
+) {
 
-    var userDataRepository: UserDataRepository? = null
+    var userComponent: UserComponent? = null
+        private set
 
     val username: String
-    get() = storage.getString(REGISTERED_USER)
+        get() = storage.getString(REGISTERED_USER)
 
-    fun isUserLoggedIn() = userDataRepository != null
+    fun isUserLoggedIn() = userComponent != null
 
     fun isUserRegistered() = storage.getString(REGISTERED_USER).isNotEmpty()
 
@@ -34,7 +43,7 @@ class UserManager(private val storage: Storage) {
     }
 
     fun logout() {
-        userDataRepository = null
+        userComponent = null
     }
 
     fun unregister() {
@@ -45,7 +54,7 @@ class UserManager(private val storage: Storage) {
     }
 
     private fun userJustLoggedIn() {
-        userDataRepository = UserDataRepository(this)
+        userComponent = userComponentFactory.create()
     }
 
 }

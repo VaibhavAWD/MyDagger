@@ -13,18 +13,25 @@ import practice.mydagger.MyApplication
 import practice.mydagger.R
 import practice.mydagger.main.MainActivity
 import practice.mydagger.registration.RegistrationActivity
+import javax.inject.Inject
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var loginViewModel: LoginViewModel
+    @Inject
+    lateinit var loginViewModel: LoginViewModel
 
     private lateinit var displayError: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Creates an instance of LoginComponent by grabbing the factory from the app graph
+        (application as MyApplication).appComponent
+            .loginComponent()
+            .create()
+            .inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        loginViewModel = LoginViewModel((application as MyApplication).userManager)
         loginViewModel.loginState.observe(this, Observer { state ->
             when (state) {
                 is LoginSuccess -> {

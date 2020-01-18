@@ -8,16 +8,27 @@ import practice.mydagger.MyApplication
 import practice.mydagger.R
 import practice.mydagger.registration.enterdetails.EnterDetailsFragment
 import practice.mydagger.registration.termsandconditions.TermsAndConditionsFragment
+import javax.inject.Inject
 
 class RegistrationActivity : AppCompatActivity() {
 
+    // Stores an instance of RegistrationComponent so that its Fragments can access it
+    lateinit var registrationComponent: RegistrationComponent
+
+    @Inject
     lateinit var registrationViewModel: RegistrationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Creates an instance of RegistrationComponent by grabbing the
+        // factory from the app graph
+        registrationComponent = (application as MyApplication).appComponent
+            .registrationComponent()
+            .create()
+        registrationComponent.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
 
-        registrationViewModel = RegistrationViewModel((application as MyApplication).userManager)
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_holder, EnterDetailsFragment())
             .commit()

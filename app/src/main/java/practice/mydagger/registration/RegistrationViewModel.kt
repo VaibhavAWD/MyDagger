@@ -1,8 +1,11 @@
 package practice.mydagger.registration
 
+import practice.mydagger.di.ActivityScope
 import practice.mydagger.user.UserManager
+import javax.inject.Inject
 
-class RegistrationViewModel  constructor(val userManager: UserManager) {
+@ActivityScope
+class RegistrationViewModel @Inject constructor(val userManager: UserManager) {
 
     private var username: String? = null
     private var password: String? = null

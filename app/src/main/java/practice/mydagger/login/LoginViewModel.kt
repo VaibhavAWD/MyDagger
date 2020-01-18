@@ -3,8 +3,9 @@ package practice.mydagger.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import practice.mydagger.user.UserManager
+import javax.inject.Inject
 
-class LoginViewModel(private val userManager: UserManager) {
+class LoginViewModel @Inject constructor(private val userManager: UserManager) {
 
     private val _loginState = MutableLiveData<LoginViewState>()
     val loginState: LiveData<LoginViewState>
