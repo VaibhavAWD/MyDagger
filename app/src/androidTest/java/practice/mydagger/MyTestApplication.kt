@@ -1,6 +1,7 @@
 package practice.mydagger
 
 import practice.mydagger.di.AppComponent
+import practice.mydagger.di.DaggerTestAppComponent
 
 /**
  * [MyTestApplication] will override [MyApplication] in android tests.
