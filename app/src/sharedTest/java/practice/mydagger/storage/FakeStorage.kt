@@ -1,6 +1,8 @@
 package practice.mydagger.storage
 
-class FakeStorage: Storage {
+import javax.inject.Inject
+
+class FakeStorage @Inject constructor() : Storage {
 
     private val map = mutableMapOf<String, String>()
 
